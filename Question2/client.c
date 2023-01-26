@@ -1,41 +1,17 @@
-#include<string.h>
-#include<sys/socket.h> 
-#include<arpa/inet.h> 
-#include<unistd.h> 
-int main(int argc, char * argv[]) {
-int sock;
-struct sockaddr_in server;
-char message[2000], server_reply[3000];
+import socket
 
-sock = socket(AF_INET, SOCK_STREAM, 0);
-if (sock == -1) {
-printf("Error to create socket");
-}
-puts("Socket has been created");
-server.sin_addr.s_addr = inet_addr("10.0.0.15"); 
-server.sin_family = AF_INET;
-server.sin_port = htons(8080); 
+	def main():
 
-if (connect(sock, (struct sockaddr * ) & server, sizeof(server)) < 0) {
-perror("connect failed. Error"); 
-return 1;
-}
-puts("Socket Connected\n");
+	client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	client_socket.connect((“127.0.0.1”, 8888))
 
-for (int i = 0; i < 1; i++) { 
+	fahrenheitcelc = input(“Enter temp fahrenheit: “)
+	client_socket.send(fahrenheitcelc.encode())
 
-if (send(sock, message, strlen(message), 0) < 0) {
-puts("Send failed");
-return 1;
-}
+	temp_celcius = client_socket.recv(1024)
+	temp_celcius = float(temp_celcius.decode())
 
-if (recv(sock, server_reply, 2000, 0) < 0) {
-puts("received failed");
-break;
-}
-printf("\n %s \n", server_reply);
+	print(“Temperature in celsius: % temp_celcius)
+	client_socket.close()
 
-}
-close(sock);
-return 0;
-}
+	main()
